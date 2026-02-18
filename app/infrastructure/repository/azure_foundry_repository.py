@@ -105,8 +105,9 @@ async def main():
     foundry_repository = AzureFoundryRepository(ai_projet_client)
 
     conversation = await foundry_repository.create_thread()
-    formatted_data = AzureFoundryRepository.format_user_input("Holaaaaa")
-    agent_information = ("simple-knownledge-base-agent", "v2")
+    image_input_list = ["https://stacaiaseu2d05.blob.core.windows.net/ctnreu2aiasd02/page_0.jpg?se=2026-02-18T01%3A17%3A02Z&sp=r&sv=2026-02-06&sr=b&skoid=f3fcc274-7e1f-4823-83d3-da05e9c0cfe9&sktid=5d93ebcc-f769-4380-8b7e-289fc972da1b&skt=2026-02-18T00%3A35%3A02Z&ske=2026-02-18T01%3A37%3A02Z&sks=b&skv=2026-02-06&sig=GJfTX9QrcUn5SWfeDJUHAi/rvWM55bhqwNlbpEpMlaE%3D"]
+    formatted_data = AzureFoundryRepository.format_user_input("Holaaaaa ¿que hay en la imagen", image_input_list)
+    agent_information = ("simple-knownledge-base-agent", "2")
 
     response = await foundry_repository.chat(conversation.id, formatted_data, agent_information)
     await foundry_repository.stream_chat(conversation.id, formatted_data, agent_information)
