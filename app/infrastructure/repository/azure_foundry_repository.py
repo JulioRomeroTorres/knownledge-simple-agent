@@ -91,7 +91,8 @@ class AzureFoundryRepository(IAiProjectRepository):
                     if event.type == "response.created":
                         print(f"Stream response created with ID: {event.response.id}\n")
                     elif event.type == "response.output_text.delta":
-                        yield(event.delta)
+                        #yield(event.delta)
+                        print("Delta Item", event.delta)
                     elif event.type == "response.text.done":
                         print(f"\n\nResponse text done. Access final text in 'event.text'")
                     elif event.type == "response.completed":
