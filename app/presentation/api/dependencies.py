@@ -17,3 +17,6 @@ def get_handle_message_stream_use_case() -> HandleMessageStreamUseCase:
 
 def get_handle_documents_use_case() -> HandleDocumentsUseCase:
     return get_container().get_handle_documents_use_case()
+
+def get_handle_knownledge_use_case():
+    return get_container().get_handle_knownledge_use_case()

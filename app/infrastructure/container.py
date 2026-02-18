@@ -5,6 +5,7 @@ from app.config import get_settings
 from app.application.services.agent_manager import AgentManager
 from app.application.services.thread_manager import ThreadManager
 from app.application.services.document_manager import DocumentManager
+from app.application.services.ai_source_manager import AiSourceManager
 
 from app.application.use_cases.handle_conversation import (
     HandleMessageUseCase, HandleMessageStreamUseCase, 
@@ -13,6 +14,10 @@ from app.application.use_cases.handle_conversation import (
 
 from app.application.use_cases.handle_document import (
     HandleDocumentsUseCase
+)
+
+from app.application.use_cases.handle_knownledge_documents import (
+    HandleKnownledgeDocumentsUseCase
 )
 
 from app.infrastructure.client_factory import ChatClientFactory
@@ -80,6 +85,11 @@ class DependencyContainer:
                 self.get('storage_repository')
             )
 
+        self._factories["ai_source_manager"] = lambda: AiSourceManager(
+                self.get('document_repository'),
+                self.get('azure_foundry_repository')
+            )
+
         self._factories["agent_core"] = lambda: AgentCore(self._get_db_client(), self.get('storage_repository'))
 
         # Orchestrator (depends on chat_client and conversation_manager)
@@ -119,6 +129,12 @@ class DependencyContainer:
         return HandleDocumentsUseCase(
             document_manager=self.get("document_manager")
         )
+
+    def get_handle_knownledge_use_case(self) -> HandleKnownledgeDocumentsUseCase:
+        return HandleKnownledgeDocumentsUseCase(
+            ai_source_manager=self.get('ai_source_manager')
+        )
+
 
     def clear(self):
         self._instances.clear()

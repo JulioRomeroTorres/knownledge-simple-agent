@@ -60,6 +60,8 @@ class Settings(BaseSettings):
     storage_account_url: str = os.getenv("STORAGE_ACCOUNT_URL")
     storage_account_name: str = os.getenv("STORAGE_ACCOUNT_NAME")
 
+    vector_store_id: str = ""
+
     class Config:
         env_file = ".env"
 
