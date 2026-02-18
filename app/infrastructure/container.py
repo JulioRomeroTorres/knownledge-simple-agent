@@ -72,8 +72,10 @@ class DependencyContainer:
         self._factories["document_repository"] = lambda: DocumentManagerRepository()
         self._factories["storage_repository"] = lambda: StorageAccountRepository(self._get_storage_client(), settings.storage_account_name)
         
+        self._factories["agent_core"] = lambda: AgentCore(self._get_db_client(), self.get('storage_repository'))
+
         self._factories["agent_manager"] = lambda: AgentManager(
-            self.get('agent_core'),
+            self.get('azure_foundry_repository'),
             self.get('content_safety_repository'),
         )
         self._factories["thread_manager"] = lambda: ThreadManager(
@@ -89,8 +91,6 @@ class DependencyContainer:
                 self.get('document_repository'),
                 self.get('azure_foundry_repository')
             )
-
-        self._factories["agent_core"] = lambda: AgentCore(self._get_db_client(), self.get('storage_repository'))
 
         # Orchestrator (depends on chat_client and conversation_manager)
         self._factories["orchestrator"] = lambda: WorkflowOrchestrator(
@@ -167,7 +167,7 @@ class DependencyContainer:
         if self._ai_project_client is None:
             settings = get_settings()
             credential = DefaultAzureCredential()
-            self._ai_project_client = AIProjectClient(endpoint=settings.azure_foundry_endpoint, credential=credential)
+            self._ai_project_client = AIProjectClient(endpoint=settings.azure_ai_project_endpoint, credential=credential)
             
         return self._ai_project_client
 

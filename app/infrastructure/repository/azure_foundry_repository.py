@@ -19,7 +19,7 @@ class AzureFoundryRepository(IAiProjectRepository):
             return created_conversation
     
     @classmethod
-    def format_user_input(cls, message: str, image_input_list: Optional[List[str]] = []) -> JsonType:
+    def format_user_input(cls, message: str, image_input_list: Optional[List[str]] = []) -> JsonArrayType:
         
         image_content = [ 
             {
@@ -68,7 +68,7 @@ class AzureFoundryRepository(IAiProjectRepository):
     
     async def delete_file_from_vector_store(self, vector_store_id: str, file_id: str) -> Any:
         async with self.ai_project_client.get_openai_client() as open_ai_client:
-            return await open_ai_client.vector_stores.files.delete(file_id, vector_store_id)
+            return await open_ai_client.vector_stores.files.delete(file_id, vector_store_id=vector_store_id)
 
     async def chat(
                 self, conversation_id: str, 
@@ -121,6 +121,7 @@ class AzureFoundryRepository(IAiProjectRepository):
                 elif event.type == "response.output_text.delta":
                     #yield(event.delta)
                     print("Delta Item", event.delta)
+                    yield event.delta
                 elif event.type == "response.text.done":
                     print(f"\n\nResponse text done. Access final text in 'event.text'")
                 elif event.type == "response.completed":
@@ -135,7 +136,10 @@ async def main():
     #await foundry_repository.upload_to_vector_store(vector_store.id, "tmp/JulioCv.pdf")
     #await foundry_repository.upload_to_vector_store("vs_JG7nBSCxIz9Oyz6uLcqjDaEC", "tmp/Julio2Cv.pdf")
 
+    #await foundry_repository.delete_file_from_vector_store("vs_JG7nBSCxIz9Oyz6uLcqjDaEC", "assistant-Ge5P9KPPcPbBDL7jMaUj3z")
+
     data = await foundry_repository.get_files_from_vector_store("vs_JG7nBSCxIz9Oyz6uLcqjDaEC")
+    print("data", data)
     """conversation = await foundry_repository.create_thread()
     image_input_list = ["https://stacaiaseu2d05.blob.core.windows.net/ctnreu2aiasd02/page_0.jpg?se=2026-02-18T01%3A17%3A02Z&sp=r&sv=2026-02-06&sr=b&skoid=f3fcc274-7e1f-4823-83d3-da05e9c0cfe9&sktid=5d93ebcc-f769-4380-8b7e-289fc972da1b&skt=2026-02-18T00%3A35%3A02Z&ske=2026-02-18T01%3A37%3A02Z&sks=b&skv=2026-02-06&sig=GJfTX9QrcUn5SWfeDJUHAi/rvWM55bhqwNlbpEpMlaE%3D"]
     image_input_list = []

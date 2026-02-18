@@ -16,7 +16,8 @@ class ThreadManager:
     async def get_threads(filters: Any) -> List[Any]:
         pass
 
-    async def create_thread(self):
-        return await self.ai_project_repository.create_thread()
+    async def create_thread(self) -> str:
+        conversation = await self.ai_project_repository.create_thread()
+        return conversation.id
         
     

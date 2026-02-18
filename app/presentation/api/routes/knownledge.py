@@ -9,7 +9,7 @@ from app.presentation.api.dependencies import (
 
 )
 from app.presentation.api.dto import (
-    UploadedDocumentResponse
+    UploadedKnownledgeDocumentResponse
 )
 
 logger = logging.getLogger(__name__)
@@ -27,38 +27,32 @@ async def upload_document(
     description: Annotated[Optional[str], Form()] = None
     ):
 
-    handle_knownlege = get_handle_knownledge_use_case()
+    handle_knownlege_documents = get_handle_knownledge_use_case()
 
-    pdf_images_files = await handle_knownlege.upload_document(file)
+    vector_store_file_id = await handle_knownlege_documents.upload_document(file)
 
-    uploaded_document = UploadedDocumentResponse(
-        generated_img_files=pdf_images_files,
-        file_name=file.filename
+    uploaded_document = UploadedKnownledgeDocumentResponse(
+        vector_store_file_id=vector_store_file_id,
+        file_name=file.filename,
+        id=""
     )
     
     return JSONResponse(uploaded_document.model_dump(), headers={"status_code": "200"})
 
 @router.get("/")
-async def get_documents(
+async def get_documents():
 
-    ):
+    handle_knownlege_documents = get_handle_knownledge_use_case()
+    vector_store_documents = handle_knownlege_documents.get_documents()
 
-    handle_document = get_handle_documents_use_case()
-
-    return JSONResponse({}, headers={"status_code": "200"})
+    return JSONResponse(vector_store_documents, headers={"status_code": "200"})
 
 @router.delete("/{document_id}/")
 async def delete_document(document_id: str):
 
-    handle_document = get_handle_documents_use_case()
+    handle_knownlege_documents = get_handle_knownledge_use_case()
+    handle_knownlege_documents.delete_document(document_id)
 
-    pdf_images_files = await handle_document.index_document(file)
-
-    uploaded_document = UploadedDocumentResponse(
-        generated_img_files=pdf_images_files,
-        file_name=file.filename
-    )
-    
-    return JSONResponse(uploaded_document.model_dump(), headers={"status_code": "200"})
+    return JSONResponse({}, headers={"status_code": "200"})
 
     

@@ -73,4 +73,9 @@ class ConversationFilters(CommonFilterParams):
     
 class UploadedDocumentResponse(BaseModel):
     generated_img_files: List[str] = Field(description="List of image file from pdf page")
-    file_name: str = Field(description="List of file name")
+    file_name: str = Field(description="File name")
+
+class UploadedKnownledgeDocumentResponse(BaseModel):
+    vector_store_file_id: str = Field(description="File id in vector store")
+    file_name: str = Field(description="File name")
+    id: str = Field(description="File id")

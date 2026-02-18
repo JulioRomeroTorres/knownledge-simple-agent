@@ -61,6 +61,7 @@ class Settings(BaseSettings):
     storage_account_name: str = os.getenv("STORAGE_ACCOUNT_NAME")
 
     vector_store_id: str = ""
+    azure_ai_project_endpoint: str = os.getenv("AZURE_AI_PROJECT_ENDPOINT")
 
     class Config:
         env_file = ".env"

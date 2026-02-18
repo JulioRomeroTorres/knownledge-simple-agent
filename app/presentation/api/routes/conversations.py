@@ -16,7 +16,7 @@ from app.presentation.streaming.sse import stream_response
 
 logger = logging.getLogger(__name__)
 
-BASE_PATH = "/api/v1"
+BASE_PATH = "/api/v1/conversations"
 
 router = APIRouter(
     prefix=BASE_PATH
@@ -30,7 +30,7 @@ STREAMING_HEADERS = {
     "Transfer-Encoding": "chunked"
 }
 
-@router.post("/conversations/{conversation_id}/")
+@router.post("/{conversation_id}/")
 async def chat(conversation_id: str, conversation_request: ConversationRequest):
     handle_message = get_handle_message_use_case()
 
@@ -53,7 +53,7 @@ async def chat(conversation_id: str, conversation_request: ConversationRequest):
     return JSONResponse(chat_response.model_dump(), headers={"status_code": "200"})
 
 
-@router.post("/conversations/{conversation_id}/stream/")
+@router.post("/{conversation_id}/stream/")
 async def chat_stream(conversation_id: str, conversation_request: ConversationRequest):
     handle_message_stream = get_handle_message_stream_use_case()
 
@@ -81,14 +81,14 @@ async def chat_stream(conversation_id: str, conversation_request: ConversationRe
         headers=STREAMING_HEADERS
     )
 
-@router.post("/conversations/")
+@router.post("/")
 async def generate_thread_conversation():
     handle_threads = get_handle_threads_use_case()
     created_thread = await handle_threads.create()
     
     return JSONResponse(created_thread.model_dump(), headers={"status_code": "201"})
 
-@router.get("/conversations/")
+@router.get("/")
 async def get_conversations():
     handle_threads = get_handle_threads_use_case()
     selected_conversations = await handle_threads.get(ConversationFilters)

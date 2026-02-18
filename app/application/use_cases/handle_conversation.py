@@ -44,16 +44,14 @@ class HandleMessageUseCase(MessageUseCase):
         trace: Optional[Dict[str, Any]] = None
     ) -> AgentResponse:
 
-        self.create_thread(conversation_id)
-
         agent_response = await self.agent_manager.generate_content(
             message=message,
             additional_files=additional_files,
-            additional_information=additional_information
+            conversation_id=conversation_id
             )
 
         return AgentResponse(
-            message=agent_response.messages[-1].text,
+            message=agent_response.output[-1].content[-1].text,
             agent_name=self.agent_manager.agent_name
         )
 
@@ -73,17 +71,15 @@ class HandleMessageStreamUseCase(MessageUseCase):
         additional_information: Optional[Dict[str, Any]] = dict(),
         trace: Optional[Dict[str, Any]] = None
     ) -> AsyncGenerator[dict[str, Any], None]:
-        
-        self.create_thread(conversation_id)
 
         yield StartStreamingResponse(agent=self.agent_manager.agent_name).model_dump()
 
         async for chunk in self.agent_manager.generate_stream_content(
             message=message,
             additional_files=additional_files,
-            additional_information=additional_information
+            conversation_id=conversation_id
         ):
-            yield DataStreamingResponse(type=TypeStreamingResponseEnum.DATA.value, text=chunk.text).model_dump()
+            yield DataStreamingResponse(type=TypeStreamingResponseEnum.DATA.value, text=chunk).model_dump()
 
         yield EndStreamingResponse(type=TypeStreamingResponseEnum.END.value).model_dump()
 
