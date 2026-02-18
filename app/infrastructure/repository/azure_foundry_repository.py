@@ -104,7 +104,7 @@ async def main():
 
     conversation_id = await foundry_repository.create_thread()
     formatted_data = AzureFoundryRepository.format_user_input("Holaaaaa")
-    agent_information = ("simple-knowmledge-base-agent", "v2")
+    agent_information = ("simple-knownledge-base-agent", "v2")
 
     response = await foundry_repository.chat(conversation_id, formatted_data, agent_information)
     print("Response Agent", response)
