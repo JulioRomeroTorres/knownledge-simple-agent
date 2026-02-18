@@ -62,7 +62,7 @@ class AzureFoundryRepository(IAiProjectRepository):
                 extra_body={
                     "agent": {
                         "name": agent_name, 
-                        "version": agent_version,
+                        #"version": agent_version,
                         "type": "agent_reference"
                     }
                 }
