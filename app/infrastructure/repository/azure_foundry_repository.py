@@ -13,7 +13,7 @@ class AzureFoundryRepository(IAiProjectRepository):
         self.ai_project_client = ai_project_client
         pass
 
-    async def create_thread(self) -> str:
+    async def create_thread(self):
         async with self.ai_project_client.get_openai_client() as open_ai_client:
             created_conversation = await open_ai_client.conversations.create()
             return created_conversation
@@ -102,11 +102,11 @@ async def main():
     ai_projet_client = AIProjectClient(endpoint="https://aaifaiaseu2d02.services.ai.azure.com/api/projects/AgentFramework", credential=DefaultAzureCredential())
     foundry_repository = AzureFoundryRepository(ai_projet_client)
 
-    conversation_id = await foundry_repository.create_thread()
+    conversation = await foundry_repository.create_thread()
     formatted_data = AzureFoundryRepository.format_user_input("Holaaaaa")
     agent_information = ("simple-knownledge-base-agent", "v2")
 
-    response = await foundry_repository.chat(conversation_id, formatted_data, agent_information)
+    response = await foundry_repository.chat(conversation.id, formatted_data, agent_information)
     print("Response Agent", response)
 
     await ai_projet_client.close()
