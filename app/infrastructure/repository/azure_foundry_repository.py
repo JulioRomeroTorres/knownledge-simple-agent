@@ -1,5 +1,5 @@
 from app.domain.repository.ai_project_repository import IAiProjectRepository
-from typing import List, Any, Dict, Tuple
+from typing import List, Any, Dict, Tuple, Optional
 from azure.ai.projects.aio import AIProjectClient
 
 from azure.identity.aio import DefaultAzureCredential
@@ -18,7 +18,7 @@ class AzureFoundryRepository(IAiProjectRepository):
             created_conversation = await open_ai_client.conversations.create()
             return created_conversation
     
-    def format_user_input(cls, message: str, image_input_list: List[str]) -> JsonType:
+    def format_user_input(cls, message: str, image_input_list: Optional[List[str]] = []) -> JsonType:
         
         image_content = [ 
             {
