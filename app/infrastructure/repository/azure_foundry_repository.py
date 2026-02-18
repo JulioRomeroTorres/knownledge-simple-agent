@@ -18,6 +18,7 @@ class AzureFoundryRepository(IAiProjectRepository):
             created_conversation = await open_ai_client.conversations.create()
             return created_conversation
     
+    @classmethod
     def format_user_input(cls, message: str, image_input_list: Optional[List[str]] = []) -> JsonType:
         
         image_content = [ 
