@@ -81,7 +81,7 @@ class AzureFoundryRepository(IAiProjectRepository):
                 extra_body={
                     "agent": {
                         "name": agent_name, 
-                        "version": agent_version,
+                        #"version": agent_version,
                         "type": "agent_reference"
                     }
                 },
@@ -108,6 +108,7 @@ async def main():
     agent_information = ("simple-knownledge-base-agent", "v2")
 
     response = await foundry_repository.chat(conversation.id, formatted_data, agent_information)
+    await foundry_repository.stream_chat(conversation.id, formatted_data, agent_information)
     print("Response Agent", response)
 
     await ai_projet_client.close()
