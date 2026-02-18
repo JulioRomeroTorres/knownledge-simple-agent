@@ -75,7 +75,7 @@ class AzureFoundryRepository(IAiProjectRepository):
         agent_name, agent_version = agent_information
 
         async with self.ai_project_client.get_openai_client() as open_ai_client:
-            async with open_ai_client.responses.create(
+            stream_response = await open_ai_client.responses.create(
                 conversation=conversation_id,
                 input=formated_input,
                 extra_body={
@@ -86,17 +86,18 @@ class AzureFoundryRepository(IAiProjectRepository):
                     }
                 },
                 stream=True
-            ) as stream_response:
-                for event in stream_response:
-                    if event.type == "response.created":
-                        print(f"Stream response created with ID: {event.response.id}\n")
-                    elif event.type == "response.output_text.delta":
-                        #yield(event.delta)
-                        print("Delta Item", event.delta)
-                    elif event.type == "response.text.done":
-                        print(f"\n\nResponse text done. Access final text in 'event.text'")
-                    elif event.type == "response.completed":
-                        print(f"\n\nResponse completed. Access final text in 'event.response.output_text'")
+            )
+
+            async for event in stream_response:
+                if event.type == "response.created":
+                    print(f"Stream response created with ID: {event.response.id}\n")
+                elif event.type == "response.output_text.delta":
+                    #yield(event.delta)
+                    print("Delta Item", event.delta)
+                elif event.type == "response.text.done":
+                    print(f"\n\nResponse text done. Access final text in 'event.text'")
+                elif event.type == "response.completed":
+                    print(f"\n\nResponse completed. Access final text in 'event.response.output_text'")
 
 
 async def main():
