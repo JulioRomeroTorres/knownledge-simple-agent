@@ -25,6 +25,37 @@ install:
 	$(PIP) install --upgrade pip
 	$(PIP) install -e ".[dev]" --pre
 
+agent_name ?=
+agent_system_instruction ?=
+agent_description ?= Created by CI/CD and using makefile
+vs_name ?=
+vs_ids ?=
+
+ci-cd-create-agent:
+
+	@required_vars="agent_name agent_system_instruction"; \
+	for var in $$required_vars; do \
+		value=$$(eval echo \$$$${var}); \
+		if [ -z "$$value" ]; then \
+			echo "Error: $$var is required"; \
+			exit 1; \
+		fi; \
+	done; \
+	if [ -z "$(vs_name)" ] && [ -z "$(vs_ids)" ]; then \
+		echo "Error: You must provide at least one of vs_name or vs_ids"; \
+		exit 1; \
+	fi; \
+
+	@echo " Creating new agent ";\
+	echo "=== Summary ===";\
+	echo "Agent Name: $$agent_name";\
+	echo "Instructions: $$agent_system_instruction";\
+	echo "Decription: $$agent_description";\
+	echo "Vector Store Name: $$vs_name";\
+	echo "Vector Store IDs: $$vs_ids";\
+	execute_command="python create_agent.py --agent-name \"$$agent_name\" --agent-instruction \"$$agent_system_instruction\" --agent-description \"$$agent_description\" --vs-name \"$$vs_name\" --vs-ids \"$$vs_ids\" "; \
+	eval $$execute_command;
+
 create-agent:
 	@echo " Creating new agent "
 
