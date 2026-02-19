@@ -3,6 +3,7 @@ from typing import List, Any, Dict, Tuple, Optional
 from azure.ai.projects.aio import AIProjectClient
 
 from azure.identity.aio import DefaultAzureCredential
+from azure.ai.projects.models import PromptAgentDefinition, FileSearchTool
 import asyncio
 
 JsonType = Dict[str, Any]
