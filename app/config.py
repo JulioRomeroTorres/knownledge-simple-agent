@@ -12,7 +12,7 @@ load_dotenv(dotenv_path=env_path)
 from app.domain.message_store.cosmos_db_credentials import CosmosDbCredentials
 
 class Settings(BaseSettings):
-    app_name: str = "Draft Agent"
+    app_name: str = "Knownledge Agent"
     api_version: str = "1.0.0"
     debug: bool = os.getenv("DEBUG", "false").lower() == "true"
 
@@ -60,7 +60,7 @@ class Settings(BaseSettings):
     storage_account_url: str = os.getenv("STORAGE_ACCOUNT_URL")
     storage_account_name: str = os.getenv("STORAGE_ACCOUNT_NAME")
 
-    vector_store_id: str = ""
+    vector_store_id: Optional[str] = os.getenv("PRINCIPAL_VECTOR_STORE_ID")
     azure_ai_project_endpoint: str = os.getenv("AZURE_AI_PROJECT_ENDPOINT")
 
     class Config:

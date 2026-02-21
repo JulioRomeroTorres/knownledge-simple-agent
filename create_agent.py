@@ -24,6 +24,7 @@ async def create_agent(
 
         if vector_store_name is not None:
             vector_store = await open_ai_client.vector_stores.create(name=vector_store_name)
+            print(f"Vector store created with id {vector_store.id}")
             vector_stores_ids_list.append(vector_store.id)
 
         if vector_store_ids is not None:
@@ -32,7 +33,7 @@ async def create_agent(
 
         tool = FileSearchTool(vector_store_ids=vector_stores_ids_list)
     
-        agent = ai_project_client.agents.create_version(
+        agent = await ai_project_client.agents.create_version(
             agent_name=agent_name,
             definition=PromptAgentDefinition(
                 model=model_deployment_name,
@@ -42,6 +43,7 @@ async def create_agent(
             description=description,
         )
         
+        print("Total vector stores", vector_stores_ids_list)
         print(f"Agent created with (id: {agent.id}, name: {agent.name}, version: {agent.version})")
         print(f"Please set agent name: {agent_name} and version {agent.version} as env variable")
 
@@ -58,9 +60,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    azure_foundry_endpoint = os.getenv("")
-    model_deployment_name = os.getenv("AZURE_AI_MODEL_DEPLOYMENT_NAME")
-
+    azure_foundry_endpoint = os.getenv("AZURE_AI_PROJECT_ENDPOINT")
+    model_deployment_name = os.getenv("AZURE_MODEL_DEPLOYMENT_NAME")
+    
     asyncio.run(create_agent(
         azure_foundry_endpoint,
         model_deployment_name,
