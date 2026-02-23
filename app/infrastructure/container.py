@@ -32,13 +32,14 @@ from app.infrastructure.repository.content_safety import ContentSafetyGuardilRep
 from app.infrastructure.repository.document_manager import DocumentManagerRepository
 from app.infrastructure.repository.storage_account import StorageAccountRepository
 from app.infrastructure.repository.azure_foundry_repository import AzureFoundryRepository
+from app.infrastructure.repository.azure_credential_repository import AzureCredentialRepository, CredentialType
+
 
 from pymongo import AsyncMongoClient
 from app.infrastructure.managers.http_manager import HttpRepositoryManager
 from azure.ai.contentsafety.aio import ContentSafetyClient
 from azure.core.credentials import AzureKeyCredential
 
-from azure.identity.aio import DefaultAzureCredential
 from azure.storage.blob.aio import BlobServiceClient
 
 from azure.ai.projects.aio import AIProjectClient
@@ -149,7 +150,7 @@ class DependencyContainer:
     def _get_storage_client(self) -> BlobServiceClient:
         if self._storage_client is None:
             settings = get_settings()
-            credential = DefaultAzureCredential()
+            credential = AzureCredentialRepository().get_credential(CredentialType.CLIENT)
             self._storage_client = BlobServiceClient(settings.storage_account_url, credential=credential)
         return self._storage_client
 
@@ -166,7 +167,7 @@ class DependencyContainer:
     def _get_ai_project_client(self) -> AIProjectClient:
         if self._ai_project_client is None:
             settings = get_settings()
-            credential = DefaultAzureCredential()
+            credential = AzureCredentialRepository().get_credential(CredentialType.CLIENT)
             self._ai_project_client = AIProjectClient(endpoint=settings.azure_ai_project_endpoint, credential=credential)
             
         return self._ai_project_client
