@@ -1,4 +1,5 @@
-from azure.identity import DefaultAzureCredential   
+from azure.identity import DefaultAzureCredential
+from app.infrastructure.repository.azure_credential_repository import AzureCredentialRepository, CredentialType   
 from azure.cosmos import CosmosClient
 from typing import Optional
 from typing import Any, Dict, List

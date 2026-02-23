@@ -40,7 +40,8 @@ class Settings(BaseSettings):
     cors_origins: list[str] = [
         "http://localhost:3000",
         "http://localhost:3001",
-        "http://127.0.0.1:3000"
+        "http://127.0.0.1:3000",
+        "http://20.14.210.156:3001"
     ]
 
     app_end_user_id: Optional[str] = None
@@ -60,8 +61,12 @@ class Settings(BaseSettings):
     storage_account_url: str = os.getenv("STORAGE_ACCOUNT_URL")
     storage_account_name: str = os.getenv("STORAGE_ACCOUNT_NAME")
 
-    vector_store_id: Optional[str] = os.getenv("PRINCIPAL_VECTOR_STORE_ID")
+    vector_store_id: Optional[str] = os.getenv("VECTOR_STORE_ID")
     azure_ai_project_endpoint: str = os.getenv("AZURE_AI_PROJECT_ENDPOINT")
+
+    azure_tenat_id: Optional[str] = os.getenv("AZURE_TENANT_ID")
+    azure_client_id: Optional[str] = os.getenv("AZURE_CLIENT_ID")
+    azure_client_secret: Optional[str] = os.getenv("AZURE_CLIENT_SECRET")
 
     class Config:
         env_file = ".env"

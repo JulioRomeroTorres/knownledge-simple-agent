@@ -3,8 +3,9 @@ import os
 import argparse
 from typing import Optional
 from azure.ai.projects.aio import AIProjectClient
-from azure.identity.aio import DefaultAzureCredential
+
 from azure.ai.projects.models import PromptAgentDefinition, FileSearchTool
+from app.infrastructure.repository.azure_credential_repository import AzureCredentialRepository, CredentialType
 
 async def create_agent(
     azure_foundry_endpoint: str,
@@ -15,7 +16,8 @@ async def create_agent(
     vector_store_name: Optional[str] = None, 
     vector_store_ids: Optional[str] = None
 ):
-    ai_project_client = AIProjectClient(endpoint=azure_foundry_endpoint, credential=DefaultAzureCredential())
+    credentials = AzureCredentialRepository().get_credential(CredentialType.CLIENT)
+    ai_project_client = AIProjectClient(endpoint=azure_foundry_endpoint, credential=credentials)
     vector_stores_ids_list = []
 
     async with ai_project_client.get_openai_client() as open_ai_client:
