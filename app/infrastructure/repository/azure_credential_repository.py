@@ -13,7 +13,7 @@ class AzureCredentialRepository:
             
             settings = Settings()
             return ClientSecretCredential(
-                tenant_id=settings.azure_tenat_id,
+                tenant_id=settings.azure_tenant_id,
                 client_id=settings.azure_client_id,
                 client_secret=settings.azure_client_secret
             )

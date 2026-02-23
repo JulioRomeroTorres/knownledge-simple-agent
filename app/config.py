@@ -64,7 +64,7 @@ class Settings(BaseSettings):
     vector_store_id: Optional[str] = os.getenv("VECTOR_STORE_ID")
     azure_ai_project_endpoint: str = os.getenv("AZURE_AI_PROJECT_ENDPOINT")
 
-    azure_tenat_id: Optional[str] = os.getenv("AZURE_TENANT_ID")
+    azure_tenant_id: Optional[str] = os.getenv("AZURE_TENANT_ID")
     azure_client_id: Optional[str] = os.getenv("AZURE_CLIENT_ID")
     azure_client_secret: Optional[str] = os.getenv("AZURE_CLIENT_SECRET")
 
