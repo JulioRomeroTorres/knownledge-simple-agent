@@ -150,7 +150,7 @@ class DependencyContainer:
     def _get_storage_client(self) -> BlobServiceClient:
         if self._storage_client is None:
             settings = get_settings()
-            credential = AzureCredentialRepository().get_credential(CredentialType.CLIENT)
+            credential = AzureCredentialRepository().get_credential(CredentialType.DEFAULT)
             self._storage_client = BlobServiceClient(settings.storage_account_url, credential=credential)
         return self._storage_client
 
@@ -167,7 +167,7 @@ class DependencyContainer:
     def _get_ai_project_client(self) -> AIProjectClient:
         if self._ai_project_client is None:
             settings = get_settings()
-            credential = AzureCredentialRepository().get_credential(CredentialType.CLIENT)
+            credential = AzureCredentialRepository().get_credential(CredentialType.DEFAULT)
             self._ai_project_client = AIProjectClient(endpoint=settings.azure_ai_project_endpoint, credential=credential)
             
         return self._ai_project_client
