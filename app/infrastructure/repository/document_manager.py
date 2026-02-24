@@ -1,5 +1,6 @@
+import os
 import shutil
-from typing import Any, List
+from typing import Any, List, Optional
 from app.domain.repository.document_repository import IDocumentRepository
 from app.domain.utils import parrallel_pdf_to_img
 
@@ -7,8 +8,9 @@ class DocumentManagerRepository(IDocumentRepository):
     def __init__(self):
         pass
 
-    async def save_document_locally(self, file: Any) -> str:
-        local_file_path = f"uploads/{file.filename}"
+    async def save_document_locally(self, file: Any, upload_folder: Optional[str] = 'uploads') -> str:
+        os.makedirs(upload_folder, exist_ok=True)
+        local_file_path = f"{upload_folder}/{file.filename}"
         try:
             with open(local_file_path, "wb") as buffer:
                 shutil.copyfileobj(file.file, buffer)

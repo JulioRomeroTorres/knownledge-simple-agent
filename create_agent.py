@@ -16,7 +16,7 @@ async def create_agent(
     vector_store_name: Optional[str] = None, 
     vector_store_ids: Optional[str] = None
 ):
-    credentials = AzureCredentialRepository().get_credential(CredentialType.CLIENT)
+    credentials = AzureCredentialRepository().get_credential(CredentialType.DEFAULT)
     ai_project_client = AIProjectClient(endpoint=azure_foundry_endpoint, credential=credentials)
     vector_stores_ids_list = []
 

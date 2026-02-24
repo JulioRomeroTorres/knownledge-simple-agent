@@ -56,7 +56,7 @@ class HandleMessageUseCase(MessageUseCase):
             metadata={
                 "conversation_id": conversation_id, 
                 "model_name": agent_response.model,
-                "usage_tokens": agent_response.total_tokens,
+                "usage_tokens": agent_response.usage.total_tokens,
                 "message_id": agent_response.id
             }
         )
