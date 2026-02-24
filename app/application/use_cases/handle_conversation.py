@@ -52,7 +52,13 @@ class HandleMessageUseCase(MessageUseCase):
 
         return AgentResponse(
             message=agent_response.output[-1].content[-1].text,
-            agent_name=self.agent_manager.agent_name
+            agent_name=self.agent_manager.agent_name,
+            metadata={
+                "conversation_id": conversation_id, 
+                "model_name": agent_response.model,
+                "usage_tokens": agent_response.total_tokens,
+                "message_id": agent_response.id
+            }
         )
 
 class HandleMessageStreamUseCase(MessageUseCase):

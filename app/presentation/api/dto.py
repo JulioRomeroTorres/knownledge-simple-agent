@@ -59,7 +59,9 @@ class ConversationRequest(PrimitiveConversationInformation):
         description="Additional Params"
     )
     
-class ConversationResponse(PrimitiveConversationInformation):
+class ConversationResponse(BaseModel):
+    type: str = Field(description="Response type", default="text")
+    content: str = Field(description="Response message")
     timestamp: str = Field(description="Response timestamp", default=get_current_datetime())
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 

@@ -45,8 +45,7 @@ async def chat(conversation_id: str, conversation_request: ConversationRequest):
     )
 
     chat_response = ConversationResponse(
-        message=response.message,
-        additional_files=[],
+        content=response.message,
         metadata=response.metadata,
     )
 

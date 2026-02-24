@@ -49,7 +49,7 @@ class AgentManager:
         async for event in stream_response:
             yield event
     
-    async def generate_content(self, message: str, additional_files: Optional[List[str]] = [], conversation_id: str = "") -> AgentRunResponse:
+    async def generate_content(self, message: str, additional_files: Optional[List[str]] = [], conversation_id: str = "") -> Any:
         content = self.prepare_content(message, additional_files)
         agent_response = await self.agent_core.chat(conversation_id, content, self.agent_information)
         return agent_response
